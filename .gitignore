@@ -1,0 +1,10 @@
+.vs/
+bin/
+obj/
+
+*.user
+
+.DS_Store
+
+HUONG_DAN_TU_CODE.md
+README.md

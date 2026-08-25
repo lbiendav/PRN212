@@ -1,0 +1,111 @@
+<UserControl x:Class="ExamManagementSystem.Presentation.Views.AdminView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mvvm="clr-namespace:ExamManagementSystem.Presentation.MVVM">
+    <Grid Background="{StaticResource PageBackgroundBrush}">
+        <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="*" /></Grid.RowDefinitions>
+
+        <!-- Header riêng cho quản trị viên. -->
+        <Border Background="#1E2340" Padding="32,17">
+            <Grid>
+                <StackPanel Orientation="Horizontal"><Border Width="42" Height="42" CornerRadius="12" Background="{StaticResource PrimaryBrush}"><TextBlock Text="✓" Foreground="White" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center" /></Border><StackPanel Margin="12,0"><TextBlock Text="ExamFlow Admin" Foreground="White" FontSize="19" FontWeight="Bold" /><TextBlock Text="Quản lý hệ thống" Foreground="#BFC5E2" FontSize="12" /></StackPanel></StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"><TextBlock Text="{Binding AdminName}" Foreground="White" VerticalAlignment="Center" Margin="0,0,18,0" /><Button Content="Đăng xuất" Command="{Binding LogoutCommand}" Style="{StaticResource SecondaryButtonStyle}" /></StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Hai tab tương ứng hai nhóm CRUD theo yêu cầu. -->
+        <TabControl Grid.Row="1" Margin="26" Background="Transparent" BorderThickness="0">
+            <TabItem Header="QUẢN LÝ TÀI KHOẢN">
+                <Grid Margin="0,16,0,0">
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="350" /></Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="*" /></Grid.RowDefinitions>
+
+                    <!-- Search và Filter tài khoản. -->
+                    <StackPanel Orientation="Horizontal" Margin="0,0,14,14">
+                        <TextBox Width="250" Text="{Binding UserKeyword, UpdateSourceTrigger=PropertyChanged}" ToolTip="Tìm username, họ tên hoặc email" />
+                        <ComboBox Width="130" ItemsSource="{Binding Roles}" SelectedItem="{Binding UserRoleFilter}" Margin="8,0,0,0" />
+                        <ComboBox Width="145" ItemsSource="{Binding Statuses}" SelectedItem="{Binding UserStatusFilter}" Margin="8,0,0,0" />
+                        <Button Content="Tìm / Lọc" Command="{Binding SearchUsersCommand}" Style="{StaticResource PrimaryButtonStyle}" Margin="8,0,0,0" />
+                        <Button Content="Thêm mới" Command="{Binding NewUserCommand}" Style="{StaticResource SecondaryButtonStyle}" Margin="8,0,0,0" />
+                    </StackPanel>
+
+                    <!-- Bảng kết quả người dùng và cột thao tác CRUD. -->
+                    <DataGrid Grid.Row="1" ItemsSource="{Binding Users}" Margin="0,0,14,0">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Username" Binding="{Binding Username}" Width="120" />
+                            <DataGridTextColumn Header="Họ tên" Binding="{Binding FullName}" Width="*" />
+                            <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="180" />
+                            <DataGridTextColumn Header="Vai trò" Binding="{Binding Role}" Width="80" />
+                            <DataGridTextColumn Header="Trạng thái" Binding="{Binding StatusText}" Width="110" />
+                            <DataGridTemplateColumn Header="Thao tác" Width="135"><DataGridTemplateColumn.CellTemplate><DataTemplate><StackPanel Orientation="Horizontal">
+                                <Button Content="Sửa" Command="{Binding DataContext.EditUserCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}" Style="{StaticResource SecondaryButtonStyle}" Padding="9,4" Margin="0,4,5,4" />
+                                <Button Content="Xóa" Command="{Binding DataContext.DeleteUserCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}" Style="{StaticResource DangerButtonStyle}" Padding="9,4" Margin="0,4" />
+                            </StackPanel></DataTemplate></DataGridTemplateColumn.CellTemplate></DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <!-- Form thêm/sửa tài khoản đặt bên phải bảng. -->
+                    <Border Grid.Column="1" Grid.RowSpan="2" Style="{StaticResource CardStyle}" VerticalAlignment="Stretch">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto"><StackPanel>
+                            <TextBlock Text="{Binding UserFormTitle}" Style="{StaticResource SectionTitleStyle}" />
+                            <TextBlock Text="Tên đăng nhập" Style="{StaticResource LabelStyle}" /><TextBox Text="{Binding EditUsername, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,10" />
+                            <TextBlock Text="Họ và tên" Style="{StaticResource LabelStyle}" /><TextBox Text="{Binding EditFullName, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,10" />
+                            <TextBlock Text="Email" Style="{StaticResource LabelStyle}" /><TextBox Text="{Binding EditEmail, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,10" />
+                            <TextBlock Text="Vai trò" Style="{StaticResource LabelStyle}" /><ComboBox ItemsSource="{Binding EditRoles}" SelectedItem="{Binding EditUserRole}" Margin="0,0,0,10" />
+                            <TextBlock Text="Mật khẩu" Style="{StaticResource LabelStyle}" /><PasswordBox mvvm:PasswordBoxAssistant.Attach="True" mvvm:PasswordBoxAssistant.Password="{Binding EditUserPassword, Mode=TwoWay}" Margin="0,0,0,10" />
+                            <CheckBox Content="Tài khoản đang hoạt động" IsChecked="{Binding EditUserIsActive}" Margin="0,5,0,12" />
+                            <TextBlock Text="{Binding UserMessage}" Foreground="{StaticResource PrimaryBrush}" TextWrapping="Wrap" Margin="0,0,0,12" />
+                            <Button Content="Lưu tài khoản" Command="{Binding SaveUserCommand}" Style="{StaticResource PrimaryButtonStyle}" />
+                        </StackPanel></ScrollViewer>
+                    </Border>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="QUẢN LÝ ĐỀ THI">
+                <Grid Margin="0,16,0,0">
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="370" /></Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="*" /></Grid.RowDefinitions>
+
+                    <!-- Search và Filter đề thi theo môn/trạng thái. -->
+                    <StackPanel Orientation="Horizontal" Margin="0,0,14,14">
+                        <TextBox Width="230" Text="{Binding ExamKeyword, UpdateSourceTrigger=PropertyChanged}" ToolTip="Tìm tên đề, môn hoặc mô tả" />
+                        <TextBox Width="150" Text="{Binding ExamSubjectFilter, UpdateSourceTrigger=PropertyChanged}" ToolTip="Nhập đúng tên môn để lọc" Margin="8,0,0,0" />
+                        <ComboBox Width="145" ItemsSource="{Binding Statuses}" SelectedItem="{Binding ExamStatusFilter}" Margin="8,0,0,0" />
+                        <Button Content="Tìm / Lọc" Command="{Binding SearchExamsCommand}" Style="{StaticResource PrimaryButtonStyle}" Margin="8,0,0,0" />
+                        <Button Content="Thêm mới" Command="{Binding NewExamCommand}" Style="{StaticResource SecondaryButtonStyle}" Margin="8,0,0,0" />
+                    </StackPanel>
+
+                    <!-- Bảng đề thi và các nút sửa/xóa. -->
+                    <DataGrid Grid.Row="1" ItemsSource="{Binding Exams}" Margin="0,0,14,0">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Môn" Binding="{Binding Subject}" Width="110" />
+                            <DataGridTextColumn Header="Tên đề" Binding="{Binding Title}" Width="*" />
+                            <DataGridTextColumn Header="Số câu" Binding="{Binding QuestionCount}" Width="70" />
+                            <DataGridTextColumn Header="Phút" Binding="{Binding DurationMinutes}" Width="60" />
+                            <DataGridTextColumn Header="Trạng thái" Binding="{Binding StatusText}" Width="90" />
+                            <DataGridTemplateColumn Header="Thao tác" Width="135"><DataGridTemplateColumn.CellTemplate><DataTemplate><StackPanel Orientation="Horizontal">
+                                <Button Content="Sửa" Command="{Binding DataContext.EditExamCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}" Style="{StaticResource SecondaryButtonStyle}" Padding="9,4" Margin="0,4,5,4" />
+                                <Button Content="Xóa" Command="{Binding DataContext.DeleteExamCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}" Style="{StaticResource DangerButtonStyle}" Padding="9,4" Margin="0,4" />
+                            </StackPanel></DataTemplate></DataGridTemplateColumn.CellTemplate></DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <!-- Form thêm/sửa thông tin đề; câu hỏi mẫu được quản lý bằng script SQL. -->
+                    <Border Grid.Column="1" Grid.RowSpan="2" Style="{StaticResource CardStyle}" VerticalAlignment="Stretch">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto"><StackPanel>
+                            <TextBlock Text="{Binding ExamFormTitle}" Style="{StaticResource SectionTitleStyle}" />
+                            <TextBlock Text="Tên đề" Style="{StaticResource LabelStyle}" /><TextBox Text="{Binding EditExamTitle, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,10" />
+                            <TextBlock Text="Môn học" Style="{StaticResource LabelStyle}" /><TextBox Text="{Binding EditExamSubject, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,10" />
+                            <TextBlock Text="Mô tả" Style="{StaticResource LabelStyle}" /><TextBox Text="{Binding EditExamDescription, UpdateSourceTrigger=PropertyChanged}" Height="90" AcceptsReturn="True" TextWrapping="Wrap" VerticalContentAlignment="Top" Margin="0,0,0,10" />
+                            <TextBlock Text="Thời gian (phút)" Style="{StaticResource LabelStyle}" /><TextBox Text="{Binding EditExamDuration, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,10" />
+                            <CheckBox Content="Đề đang mở cho học viên" IsChecked="{Binding EditExamIsActive}" Margin="0,5,0,12" />
+                            <TextBlock Text="Đề mới cần thêm câu hỏi bằng SQL rồi mới nên bật." Style="{StaticResource MutedTextStyle}" TextWrapping="Wrap" Margin="0,0,0,8" />
+                            <TextBlock Text="{Binding ExamMessage}" Foreground="{StaticResource PrimaryBrush}" TextWrapping="Wrap" Margin="0,0,0,12" />
+                            <Button Content="Lưu đề thi" Command="{Binding SaveExamCommand}" Style="{StaticResource PrimaryButtonStyle}" />
+                        </StackPanel></ScrollViewer>
+                    </Border>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</UserControl>

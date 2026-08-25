@@ -1,0 +1,44 @@
+<UserControl x:Class="ExamManagementSystem.Presentation.Views.ExamTakingView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid Background="{StaticResource PageBackgroundBrush}">
+        <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="*" /><RowDefinition Height="Auto" /></Grid.RowDefinitions>
+
+        <!-- Header luôn cho biết đề đang làm và thời gian còn lại. -->
+        <Border Background="{StaticResource SurfaceBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1" Padding="30,18">
+            <Grid>
+                <StackPanel><TextBlock Text="{Binding Title}" FontSize="23" FontWeight="SemiBold" /><TextBlock Text="{Binding Subject}" Style="{StaticResource MutedTextStyle}" /></StackPanel>
+                <Border Background="#FFF3D6" CornerRadius="9" Padding="16,9" HorizontalAlignment="Right" VerticalAlignment="Center"><TextBlock Text="{Binding RemainingTimeText}" Foreground="#9A5B00" FontSize="17" FontWeight="Bold" /></Border>
+            </Grid>
+        </Border>
+
+        <!-- Danh sách câu hỏi cuộn độc lập, mỗi option Binding vào IsSelected. -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="0,22">
+            <ItemsControl ItemsSource="{Binding Questions}" Width="850" HorizontalAlignment="Center">
+                <ItemsControl.ItemTemplate><DataTemplate>
+                    <Border Style="{StaticResource CardStyle}" Margin="0,0,0,16">
+                        <StackPanel>
+                            <TextBlock FontSize="17" FontWeight="SemiBold" TextWrapping="Wrap" Margin="0,0,0,13"><Run Text="Câu " /><Run Text="{Binding OrderNumber}" /><Run Text=": " /><Run Text="{Binding Content}" /></TextBlock>
+                            <ItemsControl ItemsSource="{Binding Options}">
+                                <ItemsControl.ItemTemplate><DataTemplate>
+                                    <RadioButton IsChecked="{Binding IsSelected, Mode=TwoWay}" Content="{Binding Content}" FontSize="15" Padding="8" Margin="0,3" />
+                                </DataTemplate></ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Border>
+                </DataTemplate></ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <!-- Footer chứa cảnh báo lỗi, hủy bài và nộp bài. -->
+        <Border Grid.Row="2" Background="{StaticResource SurfaceBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,1,0,0" Padding="30,15">
+            <Grid>
+                <TextBlock Text="{Binding Message}" Foreground="{StaticResource DangerBrush}" VerticalAlignment="Center" />
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="Hủy và về trang chủ" Command="{Binding CancelCommand}" Style="{StaticResource SecondaryButtonStyle}" Margin="0,0,10,0" />
+                    <Button Content="Nộp bài" Command="{Binding SubmitCommand}" Style="{StaticResource PrimaryButtonStyle}" Width="130" />
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

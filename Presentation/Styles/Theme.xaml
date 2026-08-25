@@ -1,0 +1,41 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- Bảng màu tập trung giúp đổi giao diện toàn ứng dụng ở một nơi. -->
+    <SolidColorBrush x:Key="PageBackgroundBrush" Color="#F4F7FB" />
+    <SolidColorBrush x:Key="SurfaceBrush" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="PrimaryBrush" Color="#4F46E5" />
+    <SolidColorBrush x:Key="PrimaryDarkBrush" Color="#3730A3" />
+    <SolidColorBrush x:Key="TextBrush" Color="#172033" />
+    <SolidColorBrush x:Key="MutedTextBrush" Color="#667085" />
+    <SolidColorBrush x:Key="BorderBrush" Color="#D8DEE9" />
+    <SolidColorBrush x:Key="SuccessBrush" Color="#16865C" />
+    <SolidColorBrush x:Key="DangerBrush" Color="#D14343" />
+
+    <!-- Style mặc định cho chữ và các tiêu đề. -->
+    <Style TargetType="TextBlock"><Setter Property="Foreground" Value="{StaticResource TextBrush}" /><Setter Property="FontFamily" Value="Segoe UI" /></Style>
+    <Style x:Key="PageTitleStyle" TargetType="TextBlock"><Setter Property="FontSize" Value="28" /><Setter Property="FontWeight" Value="SemiBold" /><Setter Property="Margin" Value="0,0,0,6" /></Style>
+    <Style x:Key="SectionTitleStyle" TargetType="TextBlock"><Setter Property="FontSize" Value="19" /><Setter Property="FontWeight" Value="SemiBold" /><Setter Property="Margin" Value="0,0,0,12" /></Style>
+    <Style x:Key="LabelStyle" TargetType="TextBlock"><Setter Property="FontWeight" Value="SemiBold" /><Setter Property="Margin" Value="0,0,0,6" /></Style>
+    <Style x:Key="MutedTextStyle" TargetType="TextBlock"><Setter Property="Foreground" Value="{StaticResource MutedTextBrush}" /></Style>
+
+    <!-- Style cho ô nhập và danh sách chọn để có chiều cao nhất quán. -->
+    <Style TargetType="TextBox"><Setter Property="MinHeight" Value="38" /><Setter Property="Padding" Value="10,7" /><Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" /><Setter Property="BorderThickness" Value="1" /><Setter Property="VerticalContentAlignment" Value="Center" /></Style>
+    <Style TargetType="PasswordBox"><Setter Property="MinHeight" Value="38" /><Setter Property="Padding" Value="10,7" /><Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" /><Setter Property="BorderThickness" Value="1" /><Setter Property="VerticalContentAlignment" Value="Center" /></Style>
+    <Style TargetType="ComboBox"><Setter Property="MinHeight" Value="38" /><Setter Property="Padding" Value="8,5" /><Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" /><Setter Property="VerticalContentAlignment" Value="Center" /></Style>
+
+    <!-- Nút chính dùng cho hành động quan trọng như đăng nhập/nộp bài/lưu. -->
+    <Style x:Key="PrimaryButtonStyle" TargetType="Button">
+        <Setter Property="Background" Value="{StaticResource PrimaryBrush}" /><Setter Property="Foreground" Value="White" /><Setter Property="Padding" Value="16,9" /><Setter Property="BorderThickness" Value="0" /><Setter Property="Cursor" Value="Hand" /><Setter Property="FontWeight" Value="SemiBold" /><Setter Property="MinHeight" Value="38" />
+        <Style.Triggers><Trigger Property="IsMouseOver" Value="True"><Setter Property="Background" Value="{StaticResource PrimaryDarkBrush}" /></Trigger><Trigger Property="IsEnabled" Value="False"><Setter Property="Opacity" Value="0.55" /></Trigger></Style.Triggers>
+    </Style>
+
+    <!-- Nút phụ nền trắng dùng cho điều hướng hoặc thao tác ít quan trọng hơn. -->
+    <Style x:Key="SecondaryButtonStyle" TargetType="Button"><Setter Property="Background" Value="White" /><Setter Property="Foreground" Value="{StaticResource TextBrush}" /><Setter Property="Padding" Value="14,8" /><Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" /><Setter Property="BorderThickness" Value="1" /><Setter Property="Cursor" Value="Hand" /><Setter Property="MinHeight" Value="36" /></Style>
+    <Style x:Key="DangerButtonStyle" TargetType="Button" BasedOn="{StaticResource SecondaryButtonStyle}"><Setter Property="Foreground" Value="{StaticResource DangerBrush}" /><Setter Property="BorderBrush" Value="#F0B8B8" /></Style>
+
+    <!-- Border dạng thẻ dùng để nhóm nội dung liên quan. -->
+    <Style x:Key="CardStyle" TargetType="Border"><Setter Property="Background" Value="{StaticResource SurfaceBrush}" /><Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" /><Setter Property="BorderThickness" Value="1" /><Setter Property="CornerRadius" Value="12" /><Setter Property="Padding" Value="20" /></Style>
+
+    <!-- DataGrid mặc định dễ đọc, không cho người dùng sửa trực tiếp trong ô. -->
+    <Style TargetType="DataGrid"><Setter Property="AutoGenerateColumns" Value="False" /><Setter Property="CanUserAddRows" Value="False" /><Setter Property="CanUserDeleteRows" Value="False" /><Setter Property="IsReadOnly" Value="True" /><Setter Property="HeadersVisibility" Value="Column" /><Setter Property="GridLinesVisibility" Value="Horizontal" /><Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" /><Setter Property="RowHeight" Value="42" /><Setter Property="ColumnHeaderHeight" Value="40" /></Style>
+</ResourceDictionary>

@@ -1,0 +1,22 @@
+<Application x:Class="ExamManagementSystem.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:ExamManagementSystem.Presentation.ViewModels"
+             xmlns:views="clr-namespace:ExamManagementSystem.Presentation.Views">
+    <Application.Resources>
+        <ResourceDictionary>
+            <!-- Nạp màu sắc và style dùng chung cho toàn bộ ứng dụng. -->
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Presentation/Styles/Theme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- DataTemplate ánh xạ ViewModel sang View, đây là cách điều hướng thuần MVVM. -->
+            <DataTemplate DataType="{x:Type vm:LoginViewModel}"><views:LoginView /></DataTemplate>
+            <DataTemplate DataType="{x:Type vm:RegisterViewModel}"><views:RegisterView /></DataTemplate>
+            <DataTemplate DataType="{x:Type vm:HomeViewModel}"><views:HomeView /></DataTemplate>
+            <DataTemplate DataType="{x:Type vm:ExamTakingViewModel}"><views:ExamTakingView /></DataTemplate>
+            <DataTemplate DataType="{x:Type vm:ReviewViewModel}"><views:ReviewView /></DataTemplate>
+            <DataTemplate DataType="{x:Type vm:AdminViewModel}"><views:AdminView /></DataTemplate>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
